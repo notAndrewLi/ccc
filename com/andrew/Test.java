@@ -1,6 +1,6 @@
 package ccc.com.andrew;
 
-// import java.util.Arrays;
+import java.util.Arrays;
 
 // class Test
 // {
@@ -19,9 +19,19 @@ public class Test {
     try {
       File myObj = new File("/Users/andrew/Downloads/all_data/senior/s1j4/s1.1-01.in");
       Scanner myReader = new Scanner(myObj);
+      int numColumns = Integer.parseInt(myReader.nextLine());
+      System.out.println(numColumns);
       while (myReader.hasNextLine()) {
         String data = myReader.nextLine();
-        System.out.println(data);
+        // System.out.println(data);
+        String[] splitArray = data.split(" ");
+        int[] array = new int [splitArray.length];
+
+        for (int i = 0; i < splitArray.length; i++)
+        {
+          array[i] = Integer.parseInt(splitArray[i]);
+        }
+        System.out.println(Arrays.toString(array));
       }
       myReader.close();
     } catch (FileNotFoundException e) {
