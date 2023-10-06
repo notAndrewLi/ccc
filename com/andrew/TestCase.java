@@ -1,8 +1,8 @@
 package ccc.com.andrew;
 
 import java.util.Arrays;
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.File; // Import the File class
+import java.io.FileNotFoundException; // Import this class to handle errors
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner; // Import the Scanner class to read text files
