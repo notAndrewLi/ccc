@@ -1,11 +1,15 @@
 package ccc.com.andrew;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Checker {
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
-        TestCase tc = new TestCase("s1j4", "s1.1-01", 2);
-        s1j4 problem1 = new s1j4();
+        Senior1 problem1 = new Senior1();
+        ArrayList<TestCase> testCases = problem1.getTestCases();
+        TestCase tc = testCases.get(0);
         String result = problem1.run(tc.In);
         if (result.equals(tc.Out))
         {
@@ -13,7 +17,7 @@ public class Checker {
         }
         else
         {
-            System.out.println("BOOM! Result " + result + " is wrong!!!");
+            System.out.println("BOOM! Result " + result + " is wrong!!! Expect result is " + tc.Out);
         }
     }
 };

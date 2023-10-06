@@ -8,15 +8,14 @@ import java.nio.file.Paths;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class TestCase {
-  public static Path basePath = Paths.get(System.getProperty("user.home") + "/Downloads/all_data/senior");
+  public static Path basePath = Paths.get(System.getProperty("user.home") + "/Downloads/all_data");
   public int NumColumns;
   public String[][] In;
   public String Out;
 
-  public TestCase(String problem, String testCase, int numRows) {
+  public TestCase(Path inFile, int numRows) {
     try {
-      Path inFile = basePath.resolve(problem).resolve(testCase + ".in");
-      Path outFile = basePath.resolve(problem).resolve(testCase + ".out");
+      Path outFile = inFile.resolveSibling(inFile.getFileName().toString().replaceAll(".in", ".out"));
       In = new String[numRows][];
       File inObj = inFile.toFile();
       Scanner myReader = new Scanner(inObj);
@@ -41,11 +40,5 @@ public class TestCase {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
-  }
-
-  public static void main(String[] args)
-  {
-    TestCase tc = new TestCase("s1j4", "s1.1-01", 2);
-    System.out.println(tc);
   }
 }
