@@ -14,7 +14,7 @@ public class Senior1 implements Problem {
     public ArrayList<TestCase> getTestCases() throws IOException {
         Stream<Path> stream = Files.find(BasePath, Integer.MAX_VALUE,
                 (path, basicFileAttributes) -> path.toFile().getName().matches(
-                    "s1.2-.*.in"
+                    "s1.[1|2]-.*.in"
                     //".*.1-01.in"
                     ));
         try {
@@ -37,21 +37,20 @@ public class Senior1 implements Problem {
 
         int numOnes = 0;
         for (int i = 0; i < firstRow.length; i++) {
-            if (firstRow[i].equals("1")) {
+            if (firstRow[i].equals("1")) {//if we find a black triangle we will add one to the streak of ones
                 numOnes++;
             }
             
-            if (firstRow[i].equals("0") || i == firstRow.length - 1) {
-                // We encounter a "0"
-                if (numOnes == 0) {
-                } else if (numOnes == 1) {
+            if (firstRow[i].equals("0") || i == firstRow.length - 1) {//if we find a white triangle or we reach the end of the row, we calculate the streak of ones.
+                if (numOnes == 0) {//if there is no streak, nothing happens
+                } else if (numOnes == 1) {//if there is a 1 streak, add 3 to the amount of tape
                     answer += 3;
-                } else if (numOnes == 2) {
+                } else if (numOnes == 2) {//if there is a 2 streak, add 4
                     answer += 4;
-                } else {
+                } else {//for everything else, use this formula to calculate the amount needed
                     answer += numOnes + 2;
                 }
-                numOnes = 0;
+                numOnes = 0;//reset streak
             }
         }
         for (int i = 0; i < secondRow.length; i++) {
