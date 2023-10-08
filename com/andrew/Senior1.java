@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Senior1 implements Problem {
@@ -12,10 +13,13 @@ public class Senior1 implements Problem {
     @Override
     public ArrayList<TestCase> getTestCases() throws IOException {
         Stream<Path> stream = Files.find(BasePath, Integer.MAX_VALUE,
-                (path, basicFileAttributes) -> path.toFile().getName().matches(/* ".*.in" */".*.1-01.in"));
+                (path, basicFileAttributes) -> path.toFile().getName().matches(
+                    "s1.2-.*.in"
+                    //".*.1-01.in"
+                    ));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
-            stream.forEach((path) -> testCases.add(new TestCase(path, 2)));
+            stream.forEach((path) -> testCases.add(new TestCase(path, 3)));
             return testCases;
         } finally {
             stream.close();
@@ -23,8 +27,51 @@ public class Senior1 implements Problem {
     }
 
     @Override
-    public String run(String[][] in) {
-        return "9";
+    public String run(TestCase tc) {
+        String[] firstRow = tc.In[1];
+        String[] secondRow = tc.In[2];
+        System.out.println("Working on Test Case " + tc.InFile.getFileName().toString());
+        //System.out.println("First row        : " + Arrays.toString(firstRow));
+        //System.out.println("Second row       : " + Arrays.toString(secondRow));
+        int answer = 0;
+
+        int numOnes = 0;
+        for (int i = 0; i < firstRow.length; i++) {
+            if (firstRow[i].equals("1")) {
+                numOnes++;
+            }
+            
+            if (firstRow[i].equals("0") || i == firstRow.length - 1) {
+                // We encounter a "0"
+                if (numOnes == 0) {
+                } else if (numOnes == 1) {
+                    answer += 3;
+                } else if (numOnes == 2) {
+                    answer += 4;
+                } else {
+                    answer += numOnes + 2;
+                }
+                numOnes = 0;
+            }
+        }
+        for (int i = 0; i < secondRow.length; i++) {
+            if (secondRow[i].equals("1")) {
+                answer += 3;
+            }
+        }
+        return Integer.toString(answer);
     }
 
+    public static void main(String[] args) throws IOException {
+        Senior1 problem1 = new Senior1();
+        ArrayList<TestCase> testCases = problem1.getTestCases();
+        testCases.forEach((tc) -> {
+            String result = problem1.run(tc);
+            if (result.equals(tc.Out)) {
+                System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result + " is correct!");
+            } else {
+                System.out.println(tc.InFile.getFileName().toString() + ": BOOM! Result " + result + " is wrong!!! Expect result is " + tc.Out);
+            }
+        });
+    }
 }
