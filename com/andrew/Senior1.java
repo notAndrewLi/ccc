@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Senior1 implements Problem {
@@ -14,7 +13,7 @@ public class Senior1 implements Problem {
     public ArrayList<TestCase> getTestCases() throws IOException {
         Stream<Path> stream = Files.find(BasePath, Integer.MAX_VALUE,
                 (path, basicFileAttributes) -> path.toFile().getName().matches(
-                    "s1.[1|2]-.*.in"
+                    "s1.[1|2|3|4]-.*.in"
                     //".*.1-01.in"
                     ));
         try {
@@ -43,19 +42,27 @@ public class Senior1 implements Problem {
             
             if (firstRow[i].equals("0") || i == firstRow.length - 1) {//if we find a white triangle or we reach the end of the row, we calculate the streak of ones.
                 if (numOnes == 0) {//if there is no streak, nothing happens
-                } else if (numOnes == 1) {//if there is a 1 streak, add 3 to the amount of tape
-                    answer += 3;
-                } else if (numOnes == 2) {//if there is a 2 streak, add 4
-                    answer += 4;
-                } else {//for everything else, use this formula to calculate the amount needed
+                } else {// use this formula to calculate the amount needed
                     answer += numOnes + 2;
                 }
                 numOnes = 0;//reset streak
             }
         }
-        for (int i = 0; i < secondRow.length; i++) {
+
+        for (int i = 0; i < secondRow.length; i++) { //calculating the second rows answer
             if (secondRow[i].equals("1")) {
-                answer += 3;
+                if (i%2 == 0 && firstRow[i].equals("1"))//check for if the triangle is even and if there is a black triangle above it.
+                {
+                    answer -= 2; //we subtract the two lines that will cancel each other out
+                }
+                numOnes++;
+            }
+            if (secondRow[i].equals("0") || i == secondRow.length - 1) {//if we find a white triangle or we reach the end of the row, we calculate the streak of ones.
+                if (numOnes == 0) {//if there is no streak, nothing happens
+                } else {// use this formula to calculate the amount needed
+                    answer += numOnes + 2;
+                }
+                numOnes = 0;//reset streak
             }
         }
         return Integer.toString(answer);
