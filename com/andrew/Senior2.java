@@ -13,8 +13,7 @@ public class Senior2 implements Problem {
     public ArrayList<TestCase> getTestCases() throws IOException {
         Stream<Path> stream = Files.find(BasePath, Integer.MAX_VALUE,
                 (path, basicFileAttributes) -> path.toFile().getName().matches(
-                    "s2.[1]-.*.in"
-                    ));
+                        "s2.[1].*.in"));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
             stream.forEach((path) -> testCases.add(new TestCase(path, 2)));
@@ -28,11 +27,26 @@ public class Senior2 implements Problem {
     public String run(TestCase tc) {
         String[] firstRow = tc.In[1];
         System.out.println("Working on Test Case " + tc.InFile.getFileName().toString());
-        //System.out.println("First row        : " + Arrays.toString(firstRow));
-        //System.out.println("Second row       : " + Arrays.toString(secondRow));
-        int answer = 0;
+        // System.out.println("First row : " + Arrays.toString(firstRow));
+        // System.out.println("Second row : " + Arrays.toString(secondRow));
+        String answer = "0";
 
-        return Integer.toString(answer);
+        for (int cropSize = 2; cropSize <= firstRow.length; cropSize++) {
+            int minAsymVal = Integer.MAX_VALUE;
+            for (int idxCrops = 0; idxCrops < firstRow.length + 1 - cropSize; idxCrops++) {
+                int asymVal = 0;
+                for (int idxCalcs = 0; idxCalcs < cropSize / 2; idxCalcs++) {
+                    int diff = Math.abs(Integer.parseInt(firstRow[idxCrops + idxCalcs])
+                            - Integer.parseInt(firstRow[idxCrops + cropSize - 1 + idxCalcs]));
+                    asymVal += diff;
+                }
+                if (asymVal < minAsymVal) {
+                    minAsymVal = asymVal;
+                }
+            }
+            answer += " " + Integer.toString(minAsymVal);
+        }
+        return answer;
     }
 
     public static void main(String[] args) throws IOException {
@@ -43,7 +57,8 @@ public class Senior2 implements Problem {
             if (result.equals(tc.Out)) {
                 System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result + " is correct!");
             } else {
-                System.out.println(tc.InFile.getFileName().toString() + ": BOOM! Result " + result + " is wrong!!! Expect result is " + tc.Out);
+                System.out.println(tc.InFile.getFileName().toString() + ": BOOM! Result " + result
+                        + " is wrong!!! Expect result is " + tc.Out);
             }
         });
     }

@@ -38,7 +38,7 @@ public class TestCase {
       myReader.close();
       File outObj = outFile.toFile();
       myReader = new Scanner(outObj);
-      Out = myReader.nextLine();
+      Out = myReader.nextLine().trim();
       // System.out.println(Out);
       myReader.close();
     } catch (FileNotFoundException e) {
