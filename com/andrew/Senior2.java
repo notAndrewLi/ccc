@@ -13,7 +13,7 @@ public class Senior2 implements Problem {
     public ArrayList<TestCase> getTestCases() throws IOException {
         Stream<Path> stream = Files.find(BasePath, Integer.MAX_VALUE,
                 (path, basicFileAttributes) -> path.toFile().getName().matches(
-                        "s2.[1].*.in"));
+                        "s2.*.in"));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
             stream.forEach((path) -> testCases.add(new TestCase(path, 2)));
@@ -37,7 +37,7 @@ public class Senior2 implements Problem {
                 int asymVal = 0;
                 for (int idxCalcs = 0; idxCalcs < cropSize / 2; idxCalcs++) {
                     int diff = Math.abs(Integer.parseInt(firstRow[idxCrops + idxCalcs])
-                            - Integer.parseInt(firstRow[idxCrops + cropSize - 1 + idxCalcs]));
+                            - Integer.parseInt(firstRow[idxCrops + cropSize - 1 - idxCalcs]));
                     asymVal += diff;
                 }
                 if (asymVal < minAsymVal) {
