@@ -30,14 +30,18 @@ public class Senior2 implements Problem {
         // System.out.println("First row : " + Arrays.toString(firstRow));
         // System.out.println("Second row : " + Arrays.toString(secondRow));
         String answer = "0";
+        int[] numbers = new int[firstRow.length];
+        for (int i = 0; i < firstRow.length; i++){
+            numbers[i] = Integer.parseInt(firstRow[i]);
+        }
 
         for (int cropSize = 2; cropSize <= firstRow.length; cropSize++) {
             int minAsymVal = Integer.MAX_VALUE;
             for (int idxCrops = 0; idxCrops < firstRow.length + 1 - cropSize; idxCrops++) {
                 int asymVal = 0;
                 for (int idxCalcs = 0; idxCalcs < cropSize / 2; idxCalcs++) {
-                    int diff = Math.abs(Integer.parseInt(firstRow[idxCrops + idxCalcs])
-                            - Integer.parseInt(firstRow[idxCrops + cropSize - 1 - idxCalcs]));
+                    int diff = Math.abs(numbers[idxCrops + idxCalcs]
+                            - numbers[idxCrops + cropSize - 1 - idxCalcs]);
                     asymVal += diff;
                 }
                 if (asymVal < minAsymVal) {
