@@ -3,6 +3,8 @@ package ccc.com.andrew;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
@@ -31,7 +33,7 @@ public class Senior2 implements Problem {
         // System.out.println("Second row : " + Arrays.toString(secondRow));
         String answer = "0";
         int[] numbers = new int[firstRow.length];
-        for (int i = 0; i < firstRow.length; i++){
+        for (int i = 0; i < firstRow.length; i++) {
             numbers[i] = Integer.parseInt(firstRow[i]);
         }
 
@@ -57,9 +59,13 @@ public class Senior2 implements Problem {
         Problem problem = new Senior2();
         ArrayList<TestCase> testCases = problem.getTestCases();
         testCases.forEach((tc) -> {
+            Instant start = Instant.now();
             String result = problem.run(tc);
+            Instant end = Instant.now();
+
             if (result.equals(tc.Out)) {
-                System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result + " is correct!");
+                System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result
+                        + " is correct! Execution duration: " + Duration.between(start, end));
             } else {
                 System.out.println(tc.InFile.getFileName().toString() + ": BOOM! Result " + result
                         + " is wrong!!! Expect result is " + tc.Out);
