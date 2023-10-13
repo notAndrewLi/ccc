@@ -36,8 +36,17 @@ public class Senior2 implements Problem {
         for (int i = 0; i < firstRow.length; i++) {
             numbers[i] = Integer.parseInt(firstRow[i]);
         }
-
-        for (int cropSize = 2; cropSize <= firstRow.length; cropSize++) {
+        for (int cropSize = 2; cropSize <= 3 && cropSize <= firstRow.length; cropSize++) {
+            int minAsymVal = Integer.MAX_VALUE;
+            for (int idxCrops = 0; idxCrops < firstRow.length + 1 - cropSize; idxCrops++) {
+                int asymVal = Math.abs(numbers[idxCrops] - numbers[idxCrops + cropSize - 1]);
+                if (asymVal < minAsymVal) {
+                    minAsymVal = asymVal;
+                }
+            }
+            answer += " " + Integer.toString(minAsymVal);
+        }
+        for (int cropSize = 4; cropSize <= firstRow.length; cropSize++) {
             int minAsymVal = Integer.MAX_VALUE;
             for (int idxCrops = 0; idxCrops < firstRow.length + 1 - cropSize; idxCrops++) {
                 int asymVal = 0;
