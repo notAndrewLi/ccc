@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class Senior2 implements Problem {
+public class S2_2023 implements Problem {
     private static Path BasePath = TestCase.basePath.resolve("senior").resolve("s2");
 
     @Override
@@ -65,7 +65,7 @@ public class Senior2 implements Problem {
     }
 
     public static void main(String[] args) throws IOException {
-        Problem problem = new Senior2();
+        Problem problem = new S2_2023();
         ArrayList<TestCase> testCases = problem.getTestCases();
         testCases.forEach((tc) -> {
             Instant start = Instant.now();
