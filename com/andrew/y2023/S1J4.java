@@ -1,4 +1,4 @@
-package ccc.com.andrew;
+package ccc.com.andrew.y2023;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,7 +6,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class S1_2023 implements Problem {
+import ccc.com.andrew.Problem;
+import ccc.com.andrew.TestCase;
+
+public class S1J4 implements Problem {
     private static Path BasePath = TestCase.basePath.resolve("senior").resolve("s1j4");
 
     @Override
@@ -73,7 +76,7 @@ public class S1_2023 implements Problem {
     }
 
     public static void main(String[] args) throws IOException {
-        S1_2023 problem1 = new S1_2023();
+        S1J4 problem1 = new S1J4();
         ArrayList<TestCase> testCases = problem1.getTestCases();
         testCases.forEach((tc) -> {
             String result = problem1.run(tc);

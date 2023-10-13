@@ -1,4 +1,4 @@
-package ccc.com.andrew;
+package ccc.com.andrew.y2023;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,7 +8,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class J3_2023 implements Problem {
+import ccc.com.andrew.Problem;
+import ccc.com.andrew.TestCase;
+
+public class J3 implements Problem {
     private static Path BasePath = TestCase.basePath.resolve("junior").resolve("j3");
 
     @Override
@@ -56,7 +59,7 @@ public class J3_2023 implements Problem {
     }
 
     public static void main(String[] args) throws IOException {
-        Problem problem = new J3_2023();
+        Problem problem = new J3();
         ArrayList<TestCase> testCases = problem.getTestCases();
         testCases.forEach((tc) -> {
             Instant start = Instant.now();
