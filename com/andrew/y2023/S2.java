@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.OptionalInt;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -61,13 +62,16 @@ public class S2 implements Problem {
             }
             answer += " " + Integer.toString(minAsymVal);
         }
+        ForkJoinPool customPool = new ForkJoinPool(8);
         for (int cropSize = 4; cropSize <= firstRow.length; cropSize++) {
             final int windowSize = cropSize;
-            OptionalInt minAsymVal = IntStream.range(0, firstRow.length + 1 - cropSize)
-                    .parallel()
-                    .mapToObj(i -> Arrays.copyOfRange(numbers, i, i + windowSize))
-                    .mapToInt(crop -> processCrop(crop))
-                    .min();
+            OptionalInt minAsymVal = customPool.submit(() -> {
+                return IntStream.range(0, firstRow.length + 1 - windowSize)
+                        .parallel()
+                        .mapToObj(i -> Arrays.copyOfRange(numbers, i, i + windowSize))
+                        .mapToInt(crop -> processCrop(crop))
+                        .min();
+            }).join();
 
             answer += " " + Integer.toString(minAsymVal.getAsInt());
         }
