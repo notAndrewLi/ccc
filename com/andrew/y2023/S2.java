@@ -6,6 +6,9 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import ccc.com.andrew.Problem;
@@ -26,6 +29,15 @@ public class S2 implements Problem {
         } finally {
             stream.close();
         }
+    }
+
+    public static int processCrop(int[] crop) {
+        int asymVal = 0;
+        for (int idxCalcs = 0; idxCalcs < crop.length / 2; idxCalcs++) {
+            int diff = Math.abs(crop[idxCalcs] - crop[crop.length - 1 - idxCalcs]);
+            asymVal += diff;
+        }
+        return asymVal;
     }
 
     @Override
@@ -50,19 +62,14 @@ public class S2 implements Problem {
             answer += " " + Integer.toString(minAsymVal);
         }
         for (int cropSize = 4; cropSize <= firstRow.length; cropSize++) {
-            int minAsymVal = Integer.MAX_VALUE;
-            for (int idxCrops = 0; idxCrops < firstRow.length + 1 - cropSize; idxCrops++) {
-                int asymVal = 0;
-                for (int idxCalcs = 0; idxCalcs < cropSize / 2; idxCalcs++) {
-                    int diff = Math.abs(numbers[idxCrops + idxCalcs]
-                            - numbers[idxCrops + cropSize - 1 - idxCalcs]);
-                    asymVal += diff;
-                }
-                if (asymVal < minAsymVal) {
-                    minAsymVal = asymVal;
-                }
-            }
-            answer += " " + Integer.toString(minAsymVal);
+            final int windowSize = cropSize;
+            OptionalInt minAsymVal = IntStream.range(0, firstRow.length + 1 - cropSize)
+                    .parallel()
+                    .mapToObj(i -> Arrays.copyOfRange(numbers, i, i + windowSize))
+                    .mapToInt(crop -> processCrop(crop))
+                    .min();
+
+            answer += " " + Integer.toString(minAsymVal.getAsInt());
         }
         return answer;
     }
