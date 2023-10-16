@@ -10,7 +10,7 @@ import ccc.com.andrew.Problem;
 import ccc.com.andrew.TestCase;
 
 public class J2 implements Problem {
-    private static Path BasePath = TestCase.basePath.resolve("junior").resolve("j2");
+    private static Path BasePath = TestCase.basePath.resolve("2023").resolve("junior").resolve("j2");
 
     @Override
     public ArrayList<TestCase> getTestCases() throws IOException {

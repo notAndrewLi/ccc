@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class TestCase {
-  public static Path basePath = Paths.get(System.getProperty("user.home") + "/Downloads/all_data");
+  public static Path basePath = Paths.get(System.getProperty("user.home") + "/Downloads/");
   public int NumColumns;
   public String[][] In;
   public String Out;
