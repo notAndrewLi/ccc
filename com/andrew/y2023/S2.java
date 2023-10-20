@@ -6,10 +6,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.OptionalInt;
-import java.util.concurrent.ForkJoinPool;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import ccc.com.andrew.Problem;
@@ -32,15 +28,6 @@ public class S2 implements Problem {
         }
     }
 
-    public static int processCrop(int[] crop) {
-        int asymVal = 0;
-        for (int idxCalcs = 0; idxCalcs < crop.length / 2; idxCalcs++) {
-            int diff = Math.abs(crop[idxCalcs] - crop[crop.length - 1 - idxCalcs]);
-            asymVal += diff;
-        }
-        return asymVal;
-    }
-
     @Override
     public String run(TestCase tc) {
         String[] firstRow = tc.In[1];
@@ -48,32 +35,42 @@ public class S2 implements Problem {
         // System.out.println("First row : " + Arrays.toString(firstRow));
         // System.out.println("Second row : " + Arrays.toString(secondRow));
         String answer = "0";
-        int[] numbers = new int[firstRow.length];
-        for (int i = 0; i < firstRow.length; i++) {
+        int minAsymVal = Integer.MAX_VALUE;
+        final int N = firstRow.length;
+        int[] numbers = new int[N];
+        for (int i = 0; i < N; i++) {
             numbers[i] = Integer.parseInt(firstRow[i]);
         }
-        for (int cropSize = 2; cropSize <= 3 && cropSize <= firstRow.length; cropSize++) {
-            int minAsymVal = Integer.MAX_VALUE;
-            for (int idxCrops = 0; idxCrops < firstRow.length + 1 - cropSize; idxCrops++) {
-                int asymVal = Math.abs(numbers[idxCrops] - numbers[idxCrops + cropSize - 1]);
+        int[][] asymVals = new int[N + 1][N];
+        /*
+         * to find the asym value of the crop sizes between a left and right point
+         * we iterate through the crops so that, for each crop [l, r],
+         * we use the already calculated asym value for the crop [l + 1, r - 1] in the
+         * previous step
+         * then we can update the value for the current crop without redoing all the
+         * calculations
+         */
+
+        for (int idxCrop = 0; idxCrop < N - 1; idxCrop++) {
+            int asymVal = Math.abs(numbers[idxCrop + 1] - numbers[idxCrop]);
+            asymVals[2][idxCrop] = asymVal;
+            if (asymVal < minAsymVal) {
+                minAsymVal = asymVal;
+            }
+        }
+        answer += " " + minAsymVal;
+        for (int cropSize = 3; cropSize <= N; cropSize++) {
+            minAsymVal = Integer.MAX_VALUE;
+            for (int idxCrop = 0; idxCrop < N + 1 - cropSize; idxCrop++) {
+                int asymVal = asymVals[cropSize - 2][idxCrop + 1] // if we start at cropsize 3, the asym value of
+                        // cropsize 1 is always 0
+                        + Math.abs(numbers[cropSize + idxCrop - 1] - numbers[idxCrop]);
+                asymVals[cropSize][idxCrop] = asymVal;
                 if (asymVal < minAsymVal) {
                     minAsymVal = asymVal;
                 }
             }
-            answer += " " + Integer.toString(minAsymVal);
-        }
-        ForkJoinPool customPool = new ForkJoinPool(8);
-        for (int cropSize = 4; cropSize <= firstRow.length; cropSize++) {
-            final int windowSize = cropSize;
-            OptionalInt minAsymVal = customPool.submit(() -> {
-                return IntStream.range(0, firstRow.length + 1 - windowSize)
-                        .parallel()
-                        .mapToObj(i -> Arrays.copyOfRange(numbers, i, i + windowSize))
-                        .mapToInt(crop -> processCrop(crop))
-                        .min();
-            }).join();
-
-            answer += " " + Integer.toString(minAsymVal.getAsInt());
+            answer += " " + minAsymVal;
         }
         return answer;
     }
@@ -92,6 +89,7 @@ public class S2 implements Problem {
             } else {
                 System.out.println(tc.InFile.getFileName().toString() + ": BOOM! Result " + result
                         + " is wrong!!! Expect result is " + tc.Out);
+                return;
             }
         });
     }
