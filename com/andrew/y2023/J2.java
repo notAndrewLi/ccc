@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import ccc.com.andrew.Problem;
@@ -27,7 +28,7 @@ public class J2 implements Problem {
     }
 
     @Override
-    public String run(TestCase tc) {
+    public ArrayList<String> run(TestCase tc) {
         String[] firstRow = tc.In[0];
         System.out.println("Working on Test Case " + tc.InFile.getFileName().toString());
         // System.out.println("First row : " + Arrays.toString(firstRow));
@@ -60,22 +61,10 @@ public class J2 implements Problem {
             }
         }
 
-        return Integer.toString(answer);
+        return new ArrayList<String>(Arrays.asList(Integer.toString(answer)));
     }
 
     public static void main(String[] args) throws IOException {
-        Problem problem = new J2();
-        ArrayList<TestCase> testCases = problem.getTestCases();
-        testCases.forEach((tc) -> {
-            String result = problem.run(tc);
-            if (result.equals(tc.Out)) {
-                System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result
-                        + " is correct! You are goood :::192738210283701280");
-            } else {
-                System.out.println(
-                        tc.InFile.getFileName().toString() + ": Explosion!!!!! :sadface :sadface BOOM! Result " + result
-                                + " is wrong!!! Expect result is " + tc.Out);
-            }
-        });
+        Problem.runAndCheck(new J2());
     }
 }

@@ -4,13 +4,14 @@ import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class TestCase {
   public static Path basePath = Paths.get(System.getProperty("user.home") + "/Downloads/");
   public int NumColumns;
   public String[][] In;
-  public String Out;
+  public ArrayList<String> Out = new ArrayList<>();
   public Path InFile;
 
   // numLines <= 0 meaning it's dynamic and the first line has the value
@@ -38,7 +39,9 @@ public class TestCase {
       myReader.close();
       File outObj = outFile.toFile();
       myReader = new Scanner(outObj);
-      Out = myReader.nextLine().trim();
+      while (myReader.hasNextLine()) {
+        Out.add(myReader.nextLine().trim());
+      }
       // System.out.println(Out);
       myReader.close();
     } catch (FileNotFoundException e) {

@@ -3,9 +3,8 @@ package ccc.com.andrew.y2023;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import ccc.com.andrew.Problem;
@@ -29,7 +28,7 @@ public class J3 implements Problem {
     }
 
     @Override
-    public String run(TestCase tc) {
+    public ArrayList<String> run(TestCase tc) {
         String[] firstRow = tc.In[0];
         System.out.println("Working on Test Case " + tc.InFile.getFileName().toString());
         // System.out.println("First row : " + Arrays.toString(firstRow));
@@ -55,26 +54,10 @@ public class J3 implements Problem {
             }
         }
 
-        return String.join(",", maxIdx);
+        return new ArrayList<String>(Arrays.asList(String.join(",", maxIdx)));
     }
 
     public static void main(String[] args) throws IOException {
-        Problem problem = new J3();
-        ArrayList<TestCase> testCases = problem.getTestCases();
-        testCases.forEach((tc) -> {
-            Instant start = Instant.now();
-            String result = problem.run(tc);
-            Instant end = Instant.now();
-
-            if (result.equals(tc.Out)) {
-                System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result
-                        + " is correct! You are goood :::192738210283701280 Execution duration: "
-                        + Duration.between(start, end));
-            } else {
-                System.out.println(
-                        tc.InFile.getFileName().toString() + ": Explosion!!!!! :sadface :sadface BOOM! Result " + result
-                                + " is wrong!!! Expect result is " + tc.Out);
-            }
-        });
+        Problem.runAndCheck(new J3());
     }
 }

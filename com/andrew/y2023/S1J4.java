@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import ccc.com.andrew.Problem;
@@ -29,7 +30,7 @@ public class S1J4 implements Problem {
     }
 
     @Override
-    public String run(TestCase tc) {
+    public ArrayList<String> run(TestCase tc) {
         String[] firstRow = tc.In[1];
         String[] secondRow = tc.In[2];
         System.out.println("Working on Test Case " + tc.InFile.getFileName().toString());
@@ -72,20 +73,10 @@ public class S1J4 implements Problem {
                 numOnes = 0;// reset streak
             }
         }
-        return Integer.toString(answer);
+        return new ArrayList<String>(Arrays.asList(Integer.toString(answer)));
     }
 
     public static void main(String[] args) throws IOException {
-        S1J4 problem1 = new S1J4();
-        ArrayList<TestCase> testCases = problem1.getTestCases();
-        testCases.forEach((tc) -> {
-            String result = problem1.run(tc);
-            if (result.equals(tc.Out)) {
-                System.out.println(tc.InFile.getFileName().toString() + ": Yeah! Result " + result + " is correct!");
-            } else {
-                System.out.println(tc.InFile.getFileName().toString() + ": BOOM! Result " + result
-                        + " is wrong!!! Expect result is " + tc.Out);
-            }
-        });
+        Problem.runAndCheck(new S1J4());
     }
 }
