@@ -57,7 +57,9 @@ public class S2 implements Problem {
                 minAsymVal = asymVal;
             }
         }
-        answer += " " + minAsymVal;
+        if (N > 1) {
+            answer += " " + minAsymVal;
+        }
         for (int cropSize = 3; cropSize <= N; cropSize++) {
             minAsymVal = Integer.MAX_VALUE;
             for (int idxCrop = 0; idxCrop < N + 1 - cropSize; idxCrop++) {
