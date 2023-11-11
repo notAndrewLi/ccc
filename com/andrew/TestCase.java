@@ -2,9 +2,12 @@ package ccc.com.andrew;
 
 import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class TestCase {
@@ -19,26 +22,20 @@ public class TestCase {
     try {
       InFile = inFile;
       Path outFile = inFile.resolveSibling(inFile.getFileName().toString().replaceAll(".in", ".out"));
-      File inObj = inFile.toFile();
-      Scanner myReader = new Scanner(inObj);
-      int lineId = 0;
-      while (myReader.hasNextLine()) {
-        String data = myReader.nextLine();
-        // System.out.println(data);
-        String[] splitArray = data.split(" ");
-        if (lineId == 0) {
-          if (numLines <= 0) {
-            numLines = Integer.parseInt(splitArray[0]) + 1;
-          }
-          In = new String[numLines][];
-        }
-        // System.out.println(Arrays.toString(splitArray));
-        In[lineId] = splitArray;
-        lineId++;
+      List<String> fileStream = Files.readAllLines(inFile);
+      if (numLines > 0 && numLines != fileStream.size()) {
+        throw new RuntimeException("Inconsistent number of lines.");
       }
-      myReader.close();
+      numLines = fileStream.size();
+      In = new String[numLines][];
+      for (int lineId = 0; lineId < numLines; lineId++) {
+        String line = fileStream.get(lineId);
+        String[] splitArray = line.split(" ");
+        In[lineId] = splitArray;
+      }
+
       File outObj = outFile.toFile();
-      myReader = new Scanner(outObj);
+      Scanner myReader = new Scanner(outObj);
       while (myReader.hasNextLine()) {
         Out.add(myReader.nextLine().trim());
       }
@@ -46,6 +43,9 @@ public class TestCase {
       myReader.close();
     } catch (FileNotFoundException e) {
       System.out.println("An error occurred.");
+      e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println("File not found.");
       e.printStackTrace();
     }
   }
