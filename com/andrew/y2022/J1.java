@@ -20,7 +20,7 @@ public class J1 implements Problem {
                         "j1.*.in"));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
-            stream.forEach((path) -> testCases.add(new TestCase(path, 2)));
+            stream.forEach((path) -> testCases.add(new TestCase(path)));
             return testCases;
         } finally {
             stream.close();

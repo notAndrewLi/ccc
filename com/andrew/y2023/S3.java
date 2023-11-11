@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import ccc.com.andrew.Problem;
@@ -20,7 +19,7 @@ public class S3 implements Problem {
                         "s3.1.*.in"));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
-            stream.forEach((path) -> testCases.add(new TestCase(path, 2)));
+            stream.forEach((path) -> testCases.add(new TestCase(path)));
             return testCases;
         } finally {
             stream.close();

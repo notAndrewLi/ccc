@@ -22,7 +22,7 @@ public class S1J4 implements Problem {
                 ));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
-            stream.forEach((path) -> testCases.add(new TestCase(path, 3)));
+            stream.forEach((path) -> testCases.add(new TestCase(path)));
             return testCases;
         } finally {
             stream.close();

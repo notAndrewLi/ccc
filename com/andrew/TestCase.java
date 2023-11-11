@@ -17,16 +17,12 @@ public class TestCase {
   public ArrayList<String> Out = new ArrayList<>();
   public Path InFile;
 
-  // numLines <= 0 meaning it's dynamic and the first line has the value
-  public TestCase(Path inFile, int numLines) {
+  public TestCase(Path inFile) {
     try {
       InFile = inFile;
       Path outFile = inFile.resolveSibling(inFile.getFileName().toString().replaceAll(".in", ".out"));
       List<String> fileStream = Files.readAllLines(inFile);
-      if (numLines > 0 && numLines != fileStream.size()) {
-        throw new RuntimeException("Inconsistent number of lines.");
-      }
-      numLines = fileStream.size();
+      int numLines = fileStream.size();
       In = new String[numLines][];
       for (int lineId = 0; lineId < numLines; lineId++) {
         String line = fileStream.get(lineId);
