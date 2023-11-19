@@ -55,21 +55,23 @@ public class S2J4 implements Problem {
             dgConstraints.get(key).add(value);
         }
         int groups = Integer.valueOf(tc.In[sgcCount + dgcCount + 2][0]);
-        for (int i = sgcCount + dgcCount + 2; i < sgcCount + dgcCount + 2 + groups; i++) {
-            for (int groupIndex = 0; groupIndex < 3; groupIndex++) {
-                String key = tc.In[i + 1][groupIndex];
-                List<String> sg = sgConstraints.get(key);
-                List<String> dg = dgConstraints.get(key);
-                if (sg != null) {
-                    for (int j = 0; j < sg.size(); j++) {
-                        if (!Arrays.asList(tc.In[i + 1]).contains(sg.get(j))) {
+        for (int i = sgcCount + dgcCount + 3; i < sgcCount + dgcCount + 3 + groups; i++) {
+            String[] group = tc.In[i]; // Now we are dealing with this group of 3 people
+            for (int inGrpIdx = 0; inGrpIdx < 3; inGrpIdx++) { // loop through each of the 3 people, find the person's
+                                                               // name and the partners it must and mustn't be with
+                String key = group[inGrpIdx]; // the person
+                List<String> sg = sgConstraints.get(key); // must be with
+                List<String> dg = dgConstraints.get(key);// cannot be with
+                if (sg != null) { // if person has people they must be with
+                    for (int j = 0; j < sg.size(); j++) { // loop through each constraint
+                        if (!Arrays.asList(group).contains(sg.get(j))) { // check for that constraint in group
                             errors++;
                         }
                     }
                 }
                 if (dg != null) {
-                    for (int j = 0; j < dg.size(); j++) {
-                        if (Arrays.asList(tc.In[i + 1]).contains(dg.get(j))) {
+                    for (int j = 0; j < dg.size(); j++) { // if person has people they must NOT be with
+                        if (Arrays.asList(group).contains(dg.get(j))) { // check for that constraint in group
                             errors++;
                         }
                     }
