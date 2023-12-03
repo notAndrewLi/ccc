@@ -17,7 +17,7 @@ public class S2J5 implements Problem {
     public ArrayList<TestCase> getTestCases() throws IOException {
         Stream<Path> stream = Files.find(BasePath, Integer.MAX_VALUE,
                 (path, basicFileAttributes) -> path.toFile().getName().matches(
-                        "j5.0[9].in"));
+                        "j5.*.in"));
         try {
             ArrayList<TestCase> testCases = new ArrayList<TestCase>();
             stream.forEach((path) -> testCases.add(new TestCase(path)));
@@ -32,26 +32,21 @@ public class S2J5 implements Problem {
         System.out.println("Working on Test Case " + tc.InFile.getFileName().toString());
         int M = Integer.valueOf(tc.In[0][0]);
         int N = Integer.valueOf(tc.In[1][0]);
-        int[][] canvas = new int[M][N];
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < N; j++) {
-                canvas[i][j] = -1;
+        int golds = 0;
+        int K = Integer.valueOf(tc.In[2][0]);
+        int[] rowOperations = new int[M];
+        int[] colOperations = new int[N];
+        for (int k = 0; k < K; k++) {
+            int strokeLocation = Integer.valueOf(tc.In[k + 3][1]) - 1;
+            if (tc.In[k + 3][0].equals("R")) {
+                rowOperations[strokeLocation]++;
+            } else {
+                colOperations[strokeLocation]++;
             }
         }
-        int golds = 0;
-        int strokes = Integer.valueOf(tc.In[2][0]);
-        for (int i = 0; i < strokes; i++) {
-            int strokeLocation = Integer.valueOf(tc.In[i + 3][1]) - 1;
-            if (tc.In[i + 3][0].equals("R")) {
-                for (int rowIdx = 0; rowIdx < N; rowIdx++) {
-                    canvas[strokeLocation][rowIdx] = -canvas[strokeLocation][rowIdx];
-                    // golds += canvas[strokeLocation][rowIdx];
-                }
-            } else {
-                for (int colIdx = 0; colIdx < M; colIdx++) {
-                    canvas[colIdx][strokeLocation] = -canvas[colIdx][strokeLocation];
-                    // golds += canvas[colIdx][strokeLocation];
-                }
+        for (int m = 0; m < M; m++) {
+            for (int n = 0; n < N; n++) {
+                golds += (rowOperations[m] + colOperations[n]) % 2;
             }
         }
         return new ArrayList<String>(Arrays.asList(Integer.toString(golds)));
