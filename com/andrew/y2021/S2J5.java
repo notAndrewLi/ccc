@@ -34,21 +34,30 @@ public class S2J5 implements Problem {
         int N = Integer.valueOf(tc.In[1][0]);
         int golds = 0;
         int K = Integer.valueOf(tc.In[2][0]);
-        int[] rowOperations = new int[M];
-        int[] colOperations = new int[N];
+        boolean[] rowOperations = new boolean[M];
+        int rowParity = 0;
+        boolean[] colOperations = new boolean[N];
+        int colParity = 0;
         for (int k = 0; k < K; k++) {
             int strokeLocation = Integer.valueOf(tc.In[k + 3][1]) - 1;
             if (tc.In[k + 3][0].equals("R")) {
-                rowOperations[strokeLocation]++;
+                rowOperations[strokeLocation] = !rowOperations[strokeLocation];
+                if (rowOperations[strokeLocation]) {
+                    rowParity++;
+                } else {
+                    rowParity--;
+                }
             } else {
-                colOperations[strokeLocation]++;
+                colOperations[strokeLocation] = !colOperations[strokeLocation];
+                if (colOperations[strokeLocation]) {
+                    colParity++;
+                } else {
+                    colParity--;
+                }
             }
         }
-        for (int m = 0; m < M; m++) {
-            for (int n = 0; n < N; n++) {
-                golds += (rowOperations[m] + colOperations[n]) % 2;
-            }
-        }
+
+        golds += rowParity * N + colParity * M - (2 * rowParity * colParity);
         return new ArrayList<String>(Arrays.asList(Integer.toString(golds)));
     }
 
