@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+import java.util.HashMap;
+import java.text.DecimalFormat;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Double> riverVals = new LinkedList <Double>();
+        int n = scanner.nextInt(); //num starting rivers
+        for(int i = 0; i < n; i++){
+            riverVals.add(scanner.nextInt() * 1.0);
+        }
+        
+        while(true){
+            int cmnd = scanner.nextInt();
+            if(cmnd == 99){
+                int riverIdx = scanner.nextInt() - 1;
+                double riverLeftFlow = (scanner.nextInt() / 100.00) * riverVals.get(riverIdx); //the flow going to the left flow
+                double riverRightFlow = riverVals.get(riverIdx) - riverLeftFlow;
+                riverVals.remove(riverIdx);
+                riverVals.add(riverIdx, riverLeftFlow);
+                riverVals.add(riverIdx + 1, riverRightFlow);
+            }
+            else if(cmnd == 88){
+                int riverIdx = scanner.nextInt() - 1;
+                double curr = riverVals.get(riverIdx);
+                double next = riverVals.get(riverIdx + 1);
+                riverVals.remove(riverIdx);
+                riverVals.remove(riverIdx);
+                riverVals.add(riverIdx, curr + next);
+            }
+            else if(cmnd == 77){
+                break;
+            }
+        }
+        DecimalFormat df= new DecimalFormat("#");
+        for(int i = 0; i < riverVals.size(); i++){
+            System.out.print(df.format(riverVals.get(i)) + " ");
+        }
+        scanner.close();
+    }
+}
